@@ -1,0 +1,57 @@
+extends layout
+block content
+    h1
+    //- card del digimon seleccionado
+    div(class="container text-center")
+        div(class="row row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center")
+            div(class="col p-3")
+                div(class="card")
+                    //- imagen del digimon
+                    img(src=digimon.img class="card-img-top border-bottom")
+                    div(class="card-body")
+                        //- nombre del digimon
+                        h6(class="card-title diginame2") #{digimon.name}
+                        //- nivel del digimon
+                        p(class="card-text diginame2") Nivel: #{digimon.level}
+        //- boton para ir a otro digimon al azar
+        div(class="row justify-content-center")
+            div(class="col")
+                a(type="button" id="randomDigimonBtn" href="/digimon/#{randomDigimonName}" class="btn btn-primary") Otro Digimon al azar!
+    hr
+    //- otros digimon en el mismo nivel
+    div(class="container text-center")
+        h4 Otros Digimons en el nivel "#{digimon.level}" (#{otros.length} resultados)
+        //- carrusel con los otros digimon
+        div(class="row row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center")
+            div(class="col p-3")
+                div(id="carouselAutoplaying" class="carousel slide text-center" data-bs-ride="carousel")
+                    div(class="carousel-inner")
+                        //- se tiene que activar el primero (o cualquiera, pero solo 1)
+                        - let activarPrimero = true
+                        each digi in otros
+                            if activarPrimero
+                                - activarPrimero = false
+                                div(class="carousel-item text-center active" data-bs-interval="2000")
+                                    div(class="card")
+                                        //- link a la pagina del digimon
+                                        a(href="/digimon/#{digi.name}")
+                                            //- imagen del digimon
+                                            img(src=digi.img class="card-img-top border-bottom")
+                                        div(class="card-body")
+                                            //- nombre del digimon
+                                            h6(class="card-title diginame2") #{digi.name}
+                            else
+                                div(class="carousel-item text-center" data-bs-interval="2000")
+                                    div(class="card")
+                                        //- link a la pagina del digimon
+                                        a(href="/digimon/#{digi.name}")
+                                            //- imagen del digimon
+                                            img(src=digi.img class="card-img-top border-bottom")
+                                        div(class="card-body")
+                                            //- nombre del digimon
+                                            h6(class="card-title diginame2") #{digi.name}
+                    //- botones para ver el siguiente o el anterior del carrusel
+                    button(class="carousel-control-prev" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="prev")
+                        span(class="carousel-control-prev-icon" aria-hidden="true")
+                    button(class="carousel-control-next" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="next")
+                        span(class="carousel-control-next-icon" aria-hidden="true")

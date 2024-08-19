@@ -1,0 +1,46 @@
+extends layout
+block content
+  //- total de digimons que se muetran para el filtro actual
+  h1(id="resultados") Se encontraron #{data.length} Digimons
+  //- filtos para los digimons que se muestran
+  div(class="row text-center justify-content-center" id="filtroResultados")
+    div(class="col col-md-5 p-3")
+      div(class="input-group form-floating mb-3")
+        //- filtrar por nombre (o parte del nombre)
+        input(type="text" class="form-control" name="filterName" id="nameTxt" placeholder="nombre" aria-label="text name")
+        label(id="labelNameTxt" name="labelNameTxt" for="nameTxt") Nombre:
+        //- boton para realizar busqueda (tambien con enter o haciendo click fuera del cuadro de texto)
+        button(class="btn btn-outline-secondary button-search" type="button" id="searchBtn")
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"></path></svg>
+    div(class="col col-md-3 p-3")
+      div(class="form-floating")
+        //- lista de niveles para filtrar
+        select(class="form-select" name="filterLevel" id="levelSelect" aria-label="select level")
+          option(value="") Todos
+          each level in levels
+            option(value="#{level}") #{level}
+        label(id="labelLevelSelect" name="labelLevelSelect" for="levelSelect") Nivel:
+  //- boton para quitar filtros y volver a mostrar todos los digimons
+  div(class="row text-center justify-content-center")
+    div(class="d-grid col col-md-3 mx-auto")
+      button(type="button" class="btn btn-danger" onClick="quitarFiltros()") Quitar filtros
+  hr
+  //- cada digimon se muestra en una card con su imagen, nombre y nivel
+  div(class="container text-center")
+    div(class="row row-cols-1 row-cols-md-2 row-cols-xl-4 justify-content-center" id="digimonCards")
+      each digimon in data
+        div(class="col p-3" id="card_#{digimon.name}")
+          div(class="card")
+            //- link a la pagina del digimon
+            a(href="/digimon/#{digimon.name}")
+              //- imagen del digimon
+              img(src=digimon.img class="card-img-top border-bottom")
+            div(class="card-body")
+              //- nombre del digimon
+              h6(class="card-title diginame2") #{digimon.name}
+              //- nivel del digimon
+              p(class="card-text diginame2") Nivel: #{digimon.level}
+  //- mensaje cuando no se muestran digimons
+  div(class="container d-none" id="sinResultados")
+    h1(class="opacity-25") No se encontraron resultados para los filtros aplicados
+  script(src="/javascripts/wiki.js")
